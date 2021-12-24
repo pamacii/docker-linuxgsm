@@ -40,3 +40,6 @@ force update: `podman exec -t 7dtd ./sdtdserver force-update`
 dont forget to add to firewall\
 `firewall-cmd --add-port=26900-26902/tcp --add-port=26900-26902/udp`\
 `firewall-cmd --add-port=26900-26902/tcp --add-port=26900-26902/udp --permanent`
+
+linger/startup\
+`loginctl enable-linger <username>`
