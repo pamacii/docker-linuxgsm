@@ -16,20 +16,20 @@ start server\
 `podman exec -t 7dtd ./sdtdserver start`
 
 ### Service creation
-create systemd service file -- each new continer creation (if using new version of image)\
-`podman generate systemd 7dtd > 7dtd.service`
+Create service file\
+`podman generate systemd --new --name --files 7dtd`\
+This recreates the container each time the service starts, so updates to localhost/sdtdserver:latest will be captured with a service restart
 
-modify service to start server stop server seperate from container\
-`sed -i -e '/^ExecStart=/s/^.*$/\/usr\/bin\/bash -c "podman start 7dtd; sleep 5; exec podman exec -t 7dtd ./sdtdserver start"' 7dtd.service`\
-`sed -i -e '/^ExecStop=/s/^.*$/\/user\/bin\/podman exec -t 7dtd ./sdtdserver stop"' 7dtd.service`
 
-(ExecStopPost stops the container)
+Modify service to start server by default and to stop server before stopping container
+`sed -i -e '/^ExecStart=/s/$/ .\/sdtdserver start/' -e '/^ExecStop=/s/.*/ExecStop=\/usr\/bin\/podman exec -t %t/%n.ctr-id .\/sdtdserver stop\' -e '&/' container-7dtd.service`
+
 
 install service for use  (insure that lingering/user services are configured)  
  `podman exec -t 7dtd ./sdtdserver stop && \`\
- `podaman stop 7dtd && \`\
- `cp 7dtd.service .config/systemd/user/ && \`\
- `systemctl --user enable --now 7dtd.service`
+ `podaman rm -f 7dtd && \`\
+ `cp -Z container-7dtd.service $HOME/.config/systemd/user/ && \`\
+ `systemctl --user enable --now container-7dtd.service`
 
 ### Manage
 backup: `podman exec -t 7dtd ./sdtdserver backup`\
