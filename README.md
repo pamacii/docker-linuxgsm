@@ -32,13 +32,17 @@ This recreates the container each time the service starts, so updates to localho
 
 
 Modify service to start server by default and to stop server before stopping container\
-`sed -i -e '/^ExecStart=/s/$/ .\/sdtdserver start/' -e '/^ExecStop=/s/.*/ExecStop=\/usr\/bin\/podman exec -t %t/%n.ctr-id .\/sdtdserver stop\' -e '&/' container-7dtd.service`
-
+```
+sed -i -e '/^ExecStart=/s/$/ .\/sdtdserver start/
+/^ExecStop=/s/.*/ExecStop=\/usr\/bin\/podman exec -t %t/%n.ctr-id .\/sdtdserver stop\
+&/' container-7dtd.service
+```
 
 install service for use  (insure that lingering/user services are configured)  
  `podman exec -t 7dtd ./sdtdserver stop && \`\
  `podaman rm -f 7dtd && \`\
  `cp -Z container-7dtd.service $HOME/.config/systemd/user/ && \`\
+ `systemctl --user install container-7dtd.service`
  `systemctl --user enable --now container-7dtd.service`
 
 ### Manage
@@ -48,8 +52,8 @@ force update: `podman exec -t 7dtd ./sdtdserver force-update`
 ### Notes
 
 dont forget to add to firewall\
-`# firewall-cmd --add-port=26900-26902/tcp --add-port=26900-26902/udp`\
-`# firewall-cmd --add-port=26900-26902/tcp --add-port=26900-26902/udp --permanent`
+#ROOT `firewall-cmd --add-port=26900-26902/tcp --add-port=26900-26902/udp`\
+#ROOT `firewall-cmd --add-port=26900-26902/tcp --add-port=26900-26902/udp --permanent`
 
 enable server to start/stay alive without user login (servicefile install target should include default.target)\
 `loginctl enable-linger $USER`
