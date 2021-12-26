@@ -3,7 +3,8 @@
 ## 7 Days To Die
 ### build
 build local container\
-`podman build -f Containerfile-sdtd -t sdtdserver .`
+`podman build -f Containerfile -t localhost/lgsm-base .`
+`podman build -f Containerfile-sdtd -t localhost/sdtdserver .`
 
 ### Run
 start container\

@@ -1,0 +1,7 @@
+[stream-extras]
+name=Stream 8 - Extras
+mirrorlist=http://mirrorlist.centos.org/?release=8-stream&arch=x86_64&repo=extras&infra=$infra
+baseurl=http://mirror.centos.org/centos/8-stream/extras/x86_64/os/
+gpgcheck=0
+enabled=0
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
