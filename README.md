@@ -3,12 +3,12 @@
 ## 7 Days To Die
 ### build
 build local container\
-`podman build -f Containerfile -t localhost/lgsm-base .`
+`podman build -f Containerfile -t localhost/lgsm-base .`\
 `podman build -f Containerfile-sdtd -t localhost/sdtdserver .`
 
 ### Run (first run/manual runs)
 change to storage folder (e.g. /opt/7dtd)\
-`mkdir -p /opt/7dtd; /opt/7dtd`
+`mkdir -p /opt/7dtd; cd /opt/7dtd`
 
 start container\
 `podman run --name 7dtd -dt -p 26900-26902:26900-26902/tcp -p 26900-26902:26900-26902/udp --userns=keep-id -v "${PWD}":/home/lgsm:z localhost/sdtdserver:latest`
@@ -31,7 +31,7 @@ Create service file\
 This recreates the container each time the service starts, so updates to localhost/sdtdserver:latest will be captured with a service restart
 
 
-Modify service to start server by default and to stop server before stopping container
+Modify service to start server by default and to stop server before stopping container\
 `sed -i -e '/^ExecStart=/s/$/ .\/sdtdserver start/' -e '/^ExecStop=/s/.*/ExecStop=\/usr\/bin\/podman exec -t %t/%n.ctr-id .\/sdtdserver stop\' -e '&/' container-7dtd.service`
 
 
