@@ -1,8 +1,8 @@
-FROM localhost/lgsm-base:latest
+FROM quay.io/pamacii/lgsm:latest
 
 COPY sdtdinstall.sh /autoinstall.sh
 
-EXPOSE  26900/tcp 
+EXPOSE  26900/tcp
 EXPOSE  26900/udp 26901/udp 26902/udp
 
 CMD [ "tail", "--follow=name", "/home/lgsm/log/console/sdtdserver-console.log" ]
