@@ -11,7 +11,7 @@ change to storage folder (e.g. /opt/7dtd)\
 `mkdir -p /opt/7dtd; cd /opt/7dtd`
 
 start container\
-`podman run --name 7dtd -dt -p 26900-26902:26900-26902/tcp -p 26900-26902:26900-26902/udp --userns=keep-id -v "${PWD}":/home/lgsm:z quai.io/pamacii/sdtdserver:latest`
+`podman run --name 7dtd -dt -p 26900-26902:26900-26902/tcp -p 26900-26902:26900-26902/udp --userns=keep-id -v "${PWD}":/home/lgsm:z quay.io/pamacii/sdtdserver:latest`
 
 wait for server install to complete
 `podman logs -f 7dtd`
