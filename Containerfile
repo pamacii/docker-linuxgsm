@@ -40,11 +40,15 @@ RUN dnf install --nobest --nodocs --assumeyes --setopt=install_weak_deps=False \
 RUN useradd -d /home/lgsm -m lgsm &&\
     usermod -G tty lgsm
 
-RUN wget https://linuxgsm.com/dl/linuxgsm.sh -O /linuxgsm.sh &&\
-    chmod +x /linuxgsm.sh &&\
+COPY linuxgsm.sh /linuxgsm.sh
+RUN chmod +x /linuxgsm.sh &&\
     chown lgsm:lgsm /linuxgsm.sh &&\
-    cp /linuxgsm.sh /home/lgsm/ &&\
     chown -R lgsm:lgsm /home/lgsm
+# RUN wget https://linuxgsm.com/dl/linuxgsm.sh -O /linuxgsm.sh &&\
+#     chmod +x /linuxgsm.sh &&\
+#     chown lgsm:lgsm /linuxgsm.sh &&\
+#     cp /linuxgsm.sh /home/lgsm/ &&\
+#     chown -R lgsm:lgsm /home/lgsm
 
 USER lgsm
 WORKDIR /home/lgsm/
