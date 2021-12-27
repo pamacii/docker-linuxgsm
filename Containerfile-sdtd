@@ -1,4 +1,4 @@
-FROM quay.io/pamacii/lgsm:latest
+FROM quay.io/pamacii/lsgm
 
 COPY sdtdinstall.sh /autoinstall.sh
 
