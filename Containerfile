@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:latest as LGSM-BASE
+FROM registry.access.redhat.com/ubi8/ubi:latest
 
 # add stream sources
 COPY ./*.repo /etc/yum.repos.d/

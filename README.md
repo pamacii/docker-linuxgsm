@@ -1,17 +1,17 @@
 # LGSM-based images
 
 ## 7 Days To Die
-### build
+### local build
 build local container\
-`podman build -f Containerfile -t localhost/lgsm-base .`\
-`podman build -f Containerfile-sdtd -t localhost/sdtdserver .`
+`podman build -f Containerfile.local -t localhost/lgsm-base .`\
+`podman build -f Containerfile-sdtd.local -t localhost/sdtdserver .`
 
 ### Run (first run/manual runs)
 change to storage folder (e.g. /opt/7dtd)\
 `mkdir -p /opt/7dtd; cd /opt/7dtd`
 
 start container\
-`podman run --name 7dtd -dt -p 26900-26902:26900-26902/tcp -p 26900-26902:26900-26902/udp --userns=keep-id -v "${PWD}":/home/lgsm:z localhost/sdtdserver:latest`
+`podman run --name 7dtd -dt -p 26900-26902:26900-26902/tcp -p 26900-26902:26900-26902/udp --userns=keep-id -v "${PWD}":/home/lgsm:z quay.io/pamacii/sdtdserver:latest`
 
 wait for server install to complete
 `podman logs -f 7dtd`
@@ -28,13 +28,12 @@ stop server\
 ### Service creation (existing container/ server files exist)
 Create service file\
 `podman generate systemd --new --name --files 7dtd`\
-This recreates the container each time the service starts, so updates to localhost/sdtdserver:latest will be captured with a service restart
-
+This recreates the container each time the service starts, so updates to sdtdserver will be captured with a service restart
 
 Modify service to start server by default and to stop server before stopping container\
 ```
-sed -i -e '/^ExecStart=/s/$/ .\/sdtdserver start/
-/^ExecStop=/s/.*/ExecStop=\/usr\/bin\/podman exec -t %t/%n.ctr-id .\/sdtdserver stop\
+sed -i -e '/^ExecStart=/s/.*/\/usr\/bin\/bash -c "& \&\& exec \/usr\/bin\/podman exec -t 7dtd .\/sdtdserver start"/
+/^ExecStop=/s/.*/ExecStop=\/usr\/bin\/podman exec -t 7dtd .\/sdtdserver stop\
 &/' container-7dtd.service
 ```
 
